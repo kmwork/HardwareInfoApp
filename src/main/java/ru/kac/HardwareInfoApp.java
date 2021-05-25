@@ -8,7 +8,6 @@ import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
 import oshi.hardware.GlobalMemory;
 import oshi.hardware.HardwareAbstractionLayer;
-import oshi.software.os.OperatingSystem;
 
 @Slf4j
 @NoArgsConstructor
@@ -29,7 +28,6 @@ public class HardwareInfoApp {
         SystemInfo si = new SystemInfo();
         HardwareAbstractionLayer hal = si.getHardware();
         CentralProcessor cpu = hal.getProcessor();
-        OperatingSystem os = si.getOperatingSystem();
 
         for (int i = 0; i < 100000; i++) {
             int avgCpu = percentLoadingCpu(cpu);
