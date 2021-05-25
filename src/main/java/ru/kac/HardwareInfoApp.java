@@ -6,11 +6,13 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
+import oshi.hardware.GlobalMemory;
 import oshi.hardware.HardwareAbstractionLayer;
+import oshi.software.os.OperatingSystem;
 
 @Slf4j
 @NoArgsConstructor
-public class CpuLoadApp {
+public class HardwareInfoApp {
 
     long[] prevTicks = new long[CentralProcessor.TickType.values().length];
 
@@ -27,17 +29,27 @@ public class CpuLoadApp {
         SystemInfo si = new SystemInfo();
         HardwareAbstractionLayer hal = si.getHardware();
         CentralProcessor cpu = hal.getProcessor();
+        OperatingSystem os = si.getOperatingSystem();
 
         for (int i = 0; i < 100000; i++) {
             int avgCpu = percentLoadingCpu(cpu);
+            int avgRam = percentMemFree(hal.getMemory());
             log.info("avgCpu = {}", avgCpu);
+            log.info("avgRam = {}", avgRam);
             Thread.sleep(1000);
         }
     }
 
+    private int percentMemFree(GlobalMemory memory) {
+        double used = memory.getTotal() - memory.getAvailable();
+        double result = used * 100 / memory.getTotal();
+        log.debug("[RAM] Available = {}, Total = {}", memory.getAvailable(), memory.getTotal());
+        return (int) Math.round(result);
+    }
+
     @SneakyThrows
     public static void main(String[] args) {
-        CpuLoadApp demoApp = new CpuLoadApp();
+        HardwareInfoApp demoApp = new HardwareInfoApp();
         demoApp.run();
     }
 
