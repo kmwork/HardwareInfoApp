@@ -43,7 +43,6 @@ public class HardwareInfoApp {
 
         NetworkIF currentEthernet = getNetByKey(hal.getNetworkIFs(), new String[]{"enp", "wlfx", "Ethernet"});
         EthernetTraffic prevTraffic = calcTraffic(currentEthernet);
-        long prevTime = System.currentTimeMillis();
         for (int i = 0; i < 100000; i++) {
             int avgCpu = percentLoadingCpu(hal.getProcessor());
             int avgRam = percentMemFree(hal.getMemory());
