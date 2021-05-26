@@ -73,11 +73,15 @@ public class HardwareInfoApp {
     }
 
     private EthernetTraffic calcTraffic(NetworkIF currentEthernet) {
+        if (currentEthernet == null)
+            return null;
         currentEthernet.updateAttributes();
         return new EthernetTraffic(currentEthernet.getBytesRecv() + currentEthernet.getBytesSent(), System.nanoTime(), 0);
     }
 
     private EthernetTraffic speedBitsOnSec(NetworkIF currentEthernet, EthernetTraffic prevTraffic) {
+        if (prevTraffic == null)
+            return null;
         EthernetTraffic currentTraffic = calcTraffic(currentEthernet);
         long deltaTime = currentTraffic.nanoTime - prevTraffic.nanoTime;
         long deltaBytes = currentTraffic.allTrafficBytes - prevTraffic.allTrafficBytes;
