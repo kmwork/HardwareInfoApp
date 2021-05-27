@@ -22,7 +22,7 @@ public class HardwareInfoApp {
     public int percentLoadingCpu(CentralProcessor cpu) {
         double cpuLoad = cpu.getSystemCpuLoadBetweenTicks(prevTicks) * 100;
         prevTicks = cpu.getSystemCpuLoadTicks();
-        System.out.println("cpuLoad : " + cpuLoad);
+        log.debug("cpuLoad : " + cpuLoad);
         return (int) Math.round(cpuLoad);
     }
 
