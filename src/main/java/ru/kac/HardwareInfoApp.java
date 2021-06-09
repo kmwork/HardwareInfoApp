@@ -12,6 +12,8 @@ import oshi.hardware.CentralProcessor;
 import oshi.hardware.GlobalMemory;
 import oshi.hardware.HardwareAbstractionLayer;
 import oshi.hardware.NetworkIF;
+import oshi.software.os.FileSystem;
+import oshi.software.os.OSFileStore;
 
 @Slf4j
 @NoArgsConstructor
@@ -52,6 +54,12 @@ public class HardwareInfoApp {
             log.info("avgCpu = {}", avgCpu);
             log.info("avgRam = {}", avgRam);
             log.info("speedBitsOnSec = {} bits per second", speedBitsOnSec);
+
+            FileSystem filesystem = si.getOperatingSystem().getFileSystem();
+            for (OSFileStore store : filesystem.getFileStores()) {
+                float freePercent = (float) store.getFreeSpace() * 100f / store.getTotalSpace();
+                log.debug("mount = {}, p.size = {}, p.free = {} %", store.getMount(), store.getTotalSpace(), freePercent);
+            }
             Thread.sleep(1000);
         }
     }
